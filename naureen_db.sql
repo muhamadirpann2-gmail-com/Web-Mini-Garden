@@ -3,12 +3,7 @@
 -- Jalankan query ini di phpMyAdmin atau MySQL CLI
 -- ============================================================
 
--- 1. Buat database (skip jika sudah ada)
-CREATE DATABASE IF NOT EXISTS `naureen_db`
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
 
-USE `naureen_db`;
 
 -- 2. Tabel kontak
 CREATE TABLE IF NOT EXISTS `kontak` (

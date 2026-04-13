@@ -34,11 +34,11 @@ if ($logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_se
         $conn = getConnection();
         $keys = ['hero_title', 'hero_sub', 'about_text', 'harga_dewasa', 'harga_anak', 'jadwal_wd', 'jadwal_we', 'alamat_teks', 'maps_link'];
         
-        $stmt = $conn->prepare("UPDATE pengaturan SET nilai=? WHERE kunci=?");
+        $stmt = $conn->prepare("INSERT INTO pengaturan (kunci, nilai) VALUES (?, ?) ON DUPLICATE KEY UPDATE nilai=VALUES(nilai)");
         foreach ($keys as $k) {
             if (isset($_POST[$k])) {
                 $val = trim($_POST[$k]);
-                $stmt->bind_param('ss', $val, $k);
+                $stmt->bind_param('ss', $k, $val);
                 $stmt->execute();
             }
         }
@@ -51,7 +51,7 @@ if ($logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_se
             if (in_array($_FILES['hero_image']['type'], $allowed_types)) {
                 $path = 'assets/images/uploads/hero_' . time() . '.jpg';
                 move_uploaded_file($_FILES['hero_image']['tmp_name'], $path);
-                $conn->query("UPDATE pengaturan SET nilai='$path' WHERE kunci='hero_image'");
+                $conn->query("INSERT INTO pengaturan (kunci, nilai) VALUES ('hero_image', '$path') ON DUPLICATE KEY UPDATE nilai='$path'");
             }
         }
         
@@ -59,7 +59,7 @@ if ($logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_se
             if (in_array($_FILES['about_image']['type'], $allowed_types)) {
                 $path = 'assets/images/uploads/about_' . time() . '.jpg';
                 move_uploaded_file($_FILES['about_image']['tmp_name'], $path);
-                $conn->query("UPDATE pengaturan SET nilai='$path' WHERE kunci='about_image'");
+                $conn->query("INSERT INTO pengaturan (kunci, nilai) VALUES ('about_image', '$path') ON DUPLICATE KEY UPDATE nilai='$path'");
             }
         }
         
@@ -236,15 +236,15 @@ if ($logged_in && $tab === 'pesan') {
             <h2>Teks Utama Web</h2>
             <div class="form-group">
                 <label>Judul Utama (Hero Title)</label>
-                <input type="text" name="hero_title" value="<?= s('hero_title') ?>" required />
+                <input type="text" name="hero_title" value="<?= s('hero_title') ?>" />
             </div>
             <div class="form-group">
                 <label>Sub - Judul Utama</label>
-                <input type="text" name="hero_sub" value="<?= s('hero_sub') ?>" required />
+                <input type="text" name="hero_sub" value="<?= s('hero_sub') ?>" />
             </div>
             <div class="form-group">
                 <label>Teks Tentang Kami (Bisa lebih dari 1 paragraf)</label>
-                <textarea name="about_text" rows="5" required><?= s('about_text') ?></textarea>
+                <textarea name="about_text" rows="5"><?= s('about_text') ?></textarea>
             </div>
         </div>
 
@@ -254,21 +254,21 @@ if ($logged_in && $tab === 'pesan') {
                 <div class="col">
                     <div class="form-group">
                         <label>Harga Tiket Dewasa</label>
-                        <input type="text" name="harga_dewasa" value="<?= s('harga_dewasa') ?>" required />
+                        <input type="text" name="harga_dewasa" value="<?= s('harga_dewasa') ?>" />
                     </div>
                     <div class="form-group">
                         <label>Harga Tiket Anak-Anak</label>
-                        <input type="text" name="harga_anak" value="<?= s('harga_anak') ?>" required />
+                        <input type="text" name="harga_anak" value="<?= s('harga_anak') ?>" />
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label>Jam Buka (Senin - Jumat)</label>
-                        <input type="text" name="jadwal_wd" value="<?= s('jadwal_wd') ?>" required />
+                        <input type="text" name="jadwal_wd" value="<?= s('jadwal_wd') ?>" />
                     </div>
                     <div class="form-group">
                         <label>Jam Buka (Sabtu - Minggu)</label>
-                        <input type="text" name="jadwal_we" value="<?= s('jadwal_we') ?>" required />
+                        <input type="text" name="jadwal_we" value="<?= s('jadwal_we') ?>" />
                     </div>
                 </div>
             </div>
@@ -278,11 +278,11 @@ if ($logged_in && $tab === 'pesan') {
             <h2>Lokasi & Peta</h2>
             <div class="form-group">
                 <label>Alamat Lengkap</label>
-                <textarea name="alamat_teks" rows="2" required><?= s('alamat_teks') ?></textarea>
+                <textarea name="alamat_teks" rows="2"><?= s('alamat_teks') ?></textarea>
             </div>
             <div class="form-group">
                 <label>Link Google Maps (Contoh: https://maps.app.goo.gl/...)</label>
-                <input type="text" name="maps_link" value="<?= s('maps_link') ?>" required />
+                <input type="text" name="maps_link" value="<?= s('maps_link') ?>" />
             </div>
         </div>
         
