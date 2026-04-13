@@ -13,10 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // ── 1. Ambil & sanitasi input ──────────────────────────────
 $is_ajax  = isset($_POST['is_ajax']);
-$nama     = trim(htmlspecialchars($_POST['nama']     ?? '', ENT_QUOTES, 'UTF-8'));
-$no_hp    = trim(htmlspecialchars($_POST['no_hp']    ?? '', ENT_QUOTES, 'UTF-8'));
-$kategori = trim(htmlspecialchars($_POST['kategori'] ?? '', ENT_QUOTES, 'UTF-8'));
-$pesan    = trim(htmlspecialchars($_POST['pesan']    ?? '', ENT_QUOTES, 'UTF-8'));
+$nama     = trim($_POST['nama'] ?? '');
+$no_hp    = trim($_POST['no_hp'] ?? '');
+$kategori = trim($_POST['kategori'] ?? '');
+$pesan    = trim($_POST['pesan'] ?? '');
 
 // ── 2. Validasi ────────────────────────────────────────────
 $errors = [];
