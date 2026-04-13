@@ -1,0 +1,12 @@
+# IDE and OS files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# Temporary files or test scripts
+setup_db.php
+test.php
+
+# (Opsional: Bila tidak ingin gambar yang sedang Anda tes ter-upload, hilangkan tanda # di bawah ini)
+# assets/images/uploads/*
